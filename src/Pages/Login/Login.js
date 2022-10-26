@@ -7,7 +7,7 @@ import loginImage from '../../Assets/img/login.png'
 import { AuthContext } from './../../AuthProvider/AuthProvider';
 const Login = () => {
    const [show, setShow] = useState(true); 
-   const {LogIn} = useContext(AuthContext); 
+   const {LogIn, setUser, setLoading} = useContext(AuthContext); 
    const location = useLocation(); 
    const navigate = useNavigate(); 
    const from = location.state?.from?.pathname || '/';
@@ -63,18 +63,31 @@ const Login = () => {
       LogIn(userInfo.email, userInfo.password)
       .then(res => {
          const user = res.user; 
-         console.log(user);           
-         Swal.fire({
-            position: 'center-center',
-            icon: 'success',
-            title: 'successfull ',
-            confirmButtonText: 'ok',
-          })
-          navigate(from , {replace: true});
-          form.reset();
+         if(user?.emailVerified){
+            Swal.fire({
+               position: 'center-center',
+               icon: 'success',
+               title: 'successfull ',
+               confirmButtonText: 'ok',
+             })
+             setUser(user);
+             navigate(from , {replace: true});
+             form.reset();
+         }else{
+            Swal.fire({
+               position: 'center-center',
+               icon: 'warn',
+               title: 'without  email verification you can not login.',
+               confirmButtonText: 'ok',
+             });
+         }     
+         
       })
       .catch(err => {
          setError({...error, general: err.message})
+      })
+      .finally(()=>{
+         setLoading(false);
       })
    }
    return (

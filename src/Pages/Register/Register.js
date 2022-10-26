@@ -9,7 +9,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 const Register = () => {
    const [show ,setShow] = useState(false);
    const [isChecked , setIsChecked] = useState(false); 
-   const {createUser, updateInfo} = useContext(AuthContext); 
+   const {createUser, updateInfo, verifyEmail} = useContext(AuthContext); 
    const [userInfo, setUserInfo] = useState({
       email: '', 
       name: '', 
@@ -86,6 +86,7 @@ const Register = () => {
             photoURL: userInfo.photoURL,
          }
          handleUpdate(profile)
+         handleVerification();
          Swal.fire({
             position: 'center-center',
             icon: 'success',
@@ -103,6 +104,12 @@ const Register = () => {
    
    const handleUpdate = (profile) => {
       updateInfo(profile); 
+   }
+
+   const handleVerification = () => {
+      verifyEmail()
+      .then(() => {})
+      .catch(err =>console.log(err))
    }
    return (
       <div  className='flex items-center w-full py-5 px-4 md:px-10 bg-violet-600 dark:bg-gray-800 flex-col-reverse md:flex-row justify-between h-auto gap-7 md:gap-0 md:h-screen  '>

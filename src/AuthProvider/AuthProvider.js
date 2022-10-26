@@ -63,15 +63,18 @@ const AuthProvider = ({children}) => {
     return signInWithPopup(auth , githubProvider); 
    }
    const updateInfo = (profile) => {
+    setLoading(true);
       return updateProfile(auth.currentUser, profile); 
    }
    const verifyEmail = () => {
-    return sendEmailVerification(auth.currentUser)
+    return sendEmailVerification(auth.currentUser);
    }
 
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
-      setUser(currentUser);
+     if(currentUser === null || currentUser.emailVerified){
+         setUser(currentUser);
+     }
       setLoading(false);
       console.log(currentUser); 
     })
@@ -80,7 +83,7 @@ const AuthProvider = ({children}) => {
       unsubscribe();
     }
   }, [])
-   const authInfo = {handleThemeSwitch, isDark, createUser,LogIn, LogOut, GoogleSignIn,GithubSignIn, updateInfo, user, verifyEmail }
+   const authInfo = {handleThemeSwitch, isDark, createUser,LogIn, LogOut, GoogleSignIn,GithubSignIn, updateInfo, user, verifyEmail, setUser, loading, setLoading }
    return (
       <AuthContext.Provider value={authInfo}>
             {children}
