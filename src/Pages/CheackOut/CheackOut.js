@@ -60,16 +60,16 @@ const CheackOut = () => {
        }) 
    }
    return (
-      <div  className='flex items-center w-full py-5 px-4 md:px-10 bg-violet-600 dark:bg-gray-800 flex-col-reverse md:flex-row justify-between h-auto gap-7 md:gap-0 md:h-screen '>
+      <div  className='flex items-center w-full py-5 px-4 md:px-10 bg-violet-600 dark:bg-gray-800 flex-col  md:flex-row justify-between h-auto gap-7 md:gap-0 md:h-screen '>
          <div className='w-full sm:w-5/6 text-center md:text-start md:w-1/2 text-black space-y-5'>
             <h3 className='text-white dark:text-black  inline-block px-3 py-2 font-semibold capitalize text-2xl md:text-3xl bg-orange-600 '>Check Out Course:</h3>
-            <h3 className='text-white font-bold text-4xl md:text-5xl mt-3 my-5 flex gap-2 items-center'><BsFillCheckCircleFill className='text-black dark:text-green-600 '></BsFillCheckCircleFill>{name}</h3>
+            <h3 className='text-white font-bold text-3xl md:text-4xl mt-3 my-5 flex gap-2 items-center'><BsFillCheckCircleFill className='text-black dark:text-green-600 '></BsFillCheckCircleFill>{name}</h3>
             <h3 className='text-white font-bold text-3xl md:text-4xl mt-3 my-5 flex gap-2 items-center'><BsFillCheckCircleFill className='text-black dark:text-green-600 '></BsFillCheckCircleFill>Price:{price} tk</h3>
             <p className='text-white font-medium capitalize md:pr-8  text-xl'>For confirmation please fill the form: </p>            
             
 
          </div>
-         <div className=' sm:w-5/6 md:w-1/2 bg-orange-500 p-10 bg-opacity-90  '>
+         <div className=' sm:w-5/6 md:w-1/2 bg-orange-500 p-10 bg-opacity-90  rounded-md'>
                <h2 className='text-white font-bold  text-2xl  mb-5 text-center '>Fill The Form for confirmation:</h2>
                <div>
                   <form onSubmit={handleSave}>
@@ -90,8 +90,8 @@ const CheackOut = () => {
                         <input  className='py-2 px-3 font-medium rounded-md text-black ' type="text" name="address: " id="address" placeholder='Enter your address: ' defaultValue={customerInfo.address} readOnly={saved} onBlur={handleAddress} required/>
                      </div>
                      <div className='flex items-center  justify-center gap-2'>
-                     <button  className='text-white bg-green-600 hover:bg-green-500 font-bold rounded-md   px-8 py-3' type='submit' disabled={saved}>Save </button>
-                     <button className={`text-white hover:bg-green-500 font-bold rounded-md px-8 py-3  ${saved ? 'visible bg-green-600 ' : 'hidden bg-green-600 '  }`} onClick={confirm} >Confirm Now</button>
+                     <button  className='text-white  bg-green-600 hover:bg-green-500 font-bold rounded-md   px-8 py-3' type='submit' disabled={saved}>Save </button>
+                     <button className={`text-white hover:bg-gray-800 font-bold rounded-md px-8 py-3 dark:bg-white dark:text-black ${saved ? 'visible bg-black ' : 'hidden bg-black'  }`} onClick={confirm} >Confirm Now</button>
                      </div>
                   </form>
                </div>
