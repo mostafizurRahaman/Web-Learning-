@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
-import {FaShoppingCart, FaArrowAltCircleLeft} from 'react-icons/fa';
+import {FaShoppingCart, FaArrowAltCircleLeft,FaDownload} from 'react-icons/fa';
 
 const CourseDetails = () => {
    const course = useLoaderData();
@@ -11,6 +11,10 @@ const CourseDetails = () => {
    console.log(courseFeatures);
    return (
       <div className="bg-violet-500 text-black font-semibold capitalize w-full py-5 dark:bg-gray-600 dark:text-white ">
+         <div className="w-11/12  flex items-center  mx-auto justify-around bg-white dark:bg-gray-800 px-3 py-4 text-xl">
+              <h2>{name}</h2>
+              <p className="flex items-center  gap-3">pdf download <FaDownload></FaDownload> </p>
+         </div>
          <div className="w-11/12 mx-auto bg-white  mt-10 mb-10 p-4 rounded-md flex flex-col md:flex-row gap-5  dark:bg-gray-500 dark:shadow-md shadow-white">
             <div className="md:w-3/5 md:border-r-2 border-violet-700 dark:md:border-r-white  flex justify-center flex-col">
                <div className=" flex items-center mb-5">
@@ -50,7 +54,7 @@ const CourseDetails = () => {
                         {feature}
                      </li>
                   ))}
-                  <Link to={`/checkout/${id}`} className="text-white bg-black dark:text-black dark:bg-white w-56 text-center gap-2 justify-center  flex items-center  mx-auto mt-4 px-3 py-2 text-xl font-semibold hover:bg-orange-500 dark:hover:bg-orange-500 duration-500 transition-all rounded-3xl  dark:hover:text-white ">Checkout Now <FaShoppingCart></FaShoppingCart> </Link>
+                  <Link to={`/checkout/${id}`} className="text-white bg-black dark:text-black dark:bg-white w-80 text-center gap-2 justify-center  flex items-center  mx-auto mt-4 px-3 py-2 text-xl font-semibold hover:bg-orange-500 dark:hover:bg-orange-500 duration-500 transition-all rounded-3xl  dark:hover:text-white ">Get Premium Access<FaShoppingCart></FaShoppingCart> </Link>
                   <Link to='/courses' className="text-white bg-black dark:text-black dark:bg-white w-56 rounded-3xl text-center gap-2 mx-auto mt-4 px-3 py-2 text-xl font-semibold hover:bg-orange-500 dark:hover:bg-orange-500 duration-500 transition-all dark:hover:text-white flex items-center  justify-center">Back to Course<FaArrowAltCircleLeft></FaArrowAltCircleLeft> </Link>
                   </div>
             </div>

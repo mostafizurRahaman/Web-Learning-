@@ -3,10 +3,11 @@ import { NavLink } from 'react-router-dom';
 import logo from '../../../Assets/img/logo.png'
 import { AuthContext } from './../../../AuthProvider/AuthProvider';
 import {CiLight, CiDark } from 'react-icons/ci'; 
+import {FiLogOut } from 'react-icons/fi'; 
 
 
 const Header = () => { 
-   const {handleThemeSwitch ,isDark} = useContext(AuthContext); 
+   const {handleThemeSwitch ,isDark, LogOut, user} = useContext(AuthContext); 
    return (
       <div className='bg-violet-600 text-white dark:bg-gray-800 dark:shadow-white flex items-center justify-between px-4 md:px-10 py-5 font-bold text-base shadow-sm   shadow-black sticky top-0 left-0 w-full  z-10 '>
         <NavLink to='/' className='flex items-center gap-5'>
@@ -20,14 +21,26 @@ const Header = () => {
             <NavLink to='/fqa'>FQA</NavLink>            
         </div>
         <div className='flex items-center gap-5'>
+         {
+          user?.uid 
+          ?
+          <NavLink to='/profile' >
+              {
+              user?.uid &&  <img src={user?.photoURL} className='w-12 h-12 rounded-full' alt='' />
+              }
+          </NavLink>  
+          : 
           <NavLink to='/login'>Login</NavLink>
-          <NavLink to='/profile'>Profile</NavLink>
+         }        
           <button onClick={handleThemeSwitch} className="px-3 py-2 bg-black  text-white dark:bg-white rounded-md dark:text-black capitalize">
             {
                isDark ? <p className='flex items-center gap-1'>Go Dark <CiDark className='w-6 h-6'></CiDark></p> :   <p className='flex items-center gap-1 '>go light <CiLight className='w-6 h-6'></CiLight> </p> 
             }
             
           </button>
+          {
+            user?.uid && <FiLogOut onClick={()=> LogOut()}></FiLogOut>
+          }
         </div>
         
       </div>

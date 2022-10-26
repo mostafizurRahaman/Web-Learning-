@@ -4,9 +4,12 @@ import { Link } from 'react-router-dom';
 import registerBg from '../../Assets/img/register.png'
 import { AuthContext } from './../../AuthProvider/AuthProvider';
 import { toast } from 'react-hot-toast';
+import Swal from 'sweetalert2'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 const Register = () => {
+   const [show ,setShow] = useState(false);
    const [isChecked , setIsChecked] = useState(false); 
-   const {createUser} = useContext(AuthContext); 
+   const {createUser, updateInfo} = useContext(AuthContext); 
    const [userInfo, setUserInfo] = useState({
       email: '', 
       name: '', 
@@ -17,6 +20,7 @@ const Register = () => {
    const [error, setError] = useState({
       email: '', 
       password: '', 
+      general: '', 
    })
    const handleEmail = (e) => {
       const email = e.target.value; 
@@ -70,11 +74,40 @@ const Register = () => {
       }
    }
 
+   const handleSubmit = (e) => {
+         e.preventDefault(); 
+      createUser(userInfo.email, userInfo.password)
+      .then(res => {
+         const user = res.user; 
+         console.log(user); 
+         console.log(userInfo.email, userInfo.password)
+         const profile = {
+            displayName: userInfo.name,
+            photoURL: userInfo.photoURL,
+         }
+         handleUpdate(profile)
+         Swal.fire({
+            position: 'center-center',
+            icon: 'success',
+            title: 'Congratulations !!! for create  an account. ',
+            text: 'Please verify your email address.',
+            confirmButtonText: 'ok',
+          })
+          e.target.reset(); 
+      })
+      .catch(err => {
+         console.log(err); 
+         setError({...error, general: err.message})
+      })
+   }
    
+   const handleUpdate = (profile) => {
+      updateInfo(profile); 
+   }
    return (
       <div  className='flex items-center w-full py-5 px-4 md:px-10 bg-violet-600 dark:bg-gray-800 flex-col-reverse md:flex-row justify-between h-auto gap-7 md:gap-0 md:h-screen  '>
       <div className='w-full md:w-1/2  flex items-center justify-center'>
-         <form className='w-80 p-5 flex flex-col gap-5 bg-white h-auto rounded-xl opacity-80 dark:bg-black' >
+         <form className='w-80 p-5 flex flex-col gap-5 bg-white h-auto rounded-xl opacity-80 dark:bg-black'  onSubmit={handleSubmit}>
             <div>
                <h2 className='text-3xl font-bold dark:text-white  text-violet-600'>Sign Up </h2>
             </div>
@@ -82,13 +115,20 @@ const Register = () => {
                <input className='w-full border-0 border-b-2  border-violet-500 text-violet-600  px-2 focus:pb-1 outline-none duration-1000 transition-all font-medium focus:italic border-opacity-75 bg-transparent '   type="text" name='name' placeholder='full name' onBlur={handleName}  required/>
             </div> 
             <div className='flex flex-col'>
-               <input className='w-full bg-transparent  border-0 border-b-2  border-violet-500 text-violet-600  px-2 focus:pb-1 outline-none duration-1000 transition-all font-medium focus:italic border-opacity-75' type="email" name='email' placeholder='email address' onChange={handleEmail} required />
+               <input className='w-full bg-transparent  border-0 border-b-2  border-violet-500 text-violet-600  px-2 focus:pb-1 outline-none duration-1000 transition-all font-medium focus:italic border-opacity-75' type="email" name='email' placeholder='email address'  required onChange={handleEmail} />
                {
                  error.email && <p className='text-red-500 text-center'><small>{error.email}</small></p>
                }
             </div>
             <div className='flex flex-col '>
-               <input className='w-full bg-transparent  border-0 border-b-2  border-violet-500 text-violet-600  px-2 focus:pb-1 outline-none duration-1000 transition-all font-medium focus:italic border-opacity-75' type="password" name='password' placeholder="password" onChange={handlePassword}  required/> 
+               <label htmlFor="password" className='relative w-full flex' >
+               <input className='w-full bg-transparent  border-0 border-b-2  border-violet-500 text-violet-600  px-2 focus:pb-1 outline-none duration-1000 transition-all font-medium focus:italic border-opacity-75' id='password' type={`${show ? 'text' : 'password'}`} name='password' placeholder="password" onChange={handlePassword}  required/> 
+               <div className='absolute right-0 text-orange-500' onClick={()=> setShow(!show)}>
+                  {
+                     show ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>
+                  }
+               </div>
+               </label>
                {
                    error.password && <p className='text-red-500'><small>{error.password}</small></p>
                }
@@ -104,7 +144,9 @@ const Register = () => {
            <button className='bg-orange-500 px-3 py-2 text-white  font-bold hover:text-black dark:text-white justify-center' disabled={!isChecked} >Register</button>
            <p className='text-sm text-black dark:text-white flex items-center gap-1 capitalize justify-center'>Aready have an account? <Link to='/login' className='text-orange-500 border-b border-orange-500 '>Login</Link></p>
            </div>
-            
+            {
+               error.general && <p className='text-red-500'>{error.general}</p>
+            }
          </form>
       </div>
       
