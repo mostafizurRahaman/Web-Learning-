@@ -7,7 +7,7 @@ import {FiLogOut } from 'react-icons/fi';
 
 
 const Header = () => { 
-   const {handleThemeSwitch ,isDark, LogOut, user} = useContext(AuthContext); 
+   const {handleThemeSwitch ,isDark, LogOut, user } = useContext(AuthContext); 
    return (
       <div className='bg-violet-600 text-white dark:bg-gray-800 dark:shadow-white flex items-center justify-between px-4 md:px-10 py-5 font-bold text-base shadow-sm   shadow-black sticky top-0 left-0 w-full  z-10 '>
         <NavLink to='/' className='flex items-center gap-5'>
@@ -24,7 +24,7 @@ const Header = () => {
          {
           user?.uid 
           ?
-          <NavLink to='/profile' >
+          <NavLink to='/profile' title={user?.displayName}  >
               {
               user?.uid &&  <img src={user?.photoURL} className='w-12 h-12 rounded-full' alt='' />
               }
