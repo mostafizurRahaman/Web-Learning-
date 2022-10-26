@@ -3,6 +3,8 @@ import Main from "../../Layout/Main/Main";
 import CheackOut from "../../Pages/CheackOut/CheackOut";
 import CourseDetails from "../../Pages/CourseDetails/CourseDetails";
 import Home from "../../Pages/Home/Home";
+import Login from "../../Pages/Login/Login";
+import Register from "../../Pages/Register/Register";
 import Courses from './../../Pages/Courses/Courses';
 
 const routes = createBrowserRouter([
@@ -23,6 +25,14 @@ const routes = createBrowserRouter([
          path:'/checkout/:id', 
          element: <CheackOut></CheackOut>, 
          loader: async({params}) => fetch(`http://localhost:5000/courses/${params.id}`)
+      },
+      {
+         path:'/register', 
+         element: <Register></Register>
+      },
+      {
+         path:'/login', 
+         element: <Login></Login>
       }
    ]}
 ])
