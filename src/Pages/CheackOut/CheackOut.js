@@ -65,7 +65,7 @@ const CheackOut = () => {
             <h3 className='text-white dark:text-black  inline-block px-3 py-2 font-semibold capitalize text-2xl md:text-3xl bg-orange-600 '>Check Out Course:</h3>
             <h3 className='text-white font-bold text-3xl md:text-4xl mt-3 my-5 flex gap-2 items-center'><BsFillCheckCircleFill className='text-black dark:text-green-600 '></BsFillCheckCircleFill>{name}</h3>
             <h3 className='text-white font-bold text-3xl md:text-4xl mt-3 my-5 flex gap-2 items-center'><BsFillCheckCircleFill className='text-black dark:text-green-600 '></BsFillCheckCircleFill>Price:{price} tk</h3>
-            <p className='text-white font-medium capitalize md:pr-8  text-xl'>For confirmation please fill the form: </p>            
+              
             
 
          </div>
