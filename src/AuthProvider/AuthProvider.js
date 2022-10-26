@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { createContext } from 'react';
-import {getAuth, GithubAuthProvider, GoogleAuthProvider} from 'firebase/auth'; 
+import {createUserWithEmailAndPassword, getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile} from 'firebase/auth'; 
 import app from './../Firebase/Firebase.init';
 
 const auth = getAuth(app);
-const gooleProvider = new GoogleAuthProvider(); 
+const googleProvider = new GoogleAuthProvider(); 
 const githubProvider = new GithubAuthProvider(); 
 export const AuthContext = createContext(); 
 
@@ -37,8 +37,29 @@ const AuthProvider = ({children}) => {
       setTheme('light')
      }
    };
+
+   const createUser = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password); 
+   }
    
-   const authInfo = {handleThemeSwitch, isDark}
+   const LogIn = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password); 
+   }
+
+   const LogOut = () => {
+    return signOut(auth); 
+   }
+
+   const GoogleSignIn = () => {
+    return signInWithPopup(auth , googleProvider)
+   }
+   const GithubSignIn = () => {
+    return signInWithPopup(auth , githubProvider); 
+   }
+   const updateInfo = (profile) => {
+      return updateProfile(auth.currentUser, profile); 
+   }
+   const authInfo = {handleThemeSwitch, isDark, createUser,LogIn, LogOut, GoogleSignIn,GithubSignIn, updateInfo }
    return (
       <AuthContext.Provider value={authInfo}>
             {children}
