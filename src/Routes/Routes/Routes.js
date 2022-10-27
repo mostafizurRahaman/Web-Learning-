@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../../Layout/Main/Main";
 import CheackOut from "../../Pages/CheackOut/CheackOut";
 import CourseDetails from "../../Pages/CourseDetails/CourseDetails";
+import Error from "../../Pages/Error/Error";
 import Home from "../../Pages/Home/Home";
 import Login from "../../Pages/Login/Login";
 import Register from "../../Pages/Register/Register";
@@ -34,9 +35,13 @@ const routes = createBrowserRouter([
       {
          path:'/login', 
          element: <Login></Login>
-      }, 
-     
-   ]}
+      },   
+      {
+         path: '*', 
+         element: <Error></Error>
+      }   
+   ]}, 
+  
 ])
 
 export default routes; 

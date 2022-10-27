@@ -1,15 +1,16 @@
 import React from 'react';
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import registerBg from '../../Assets/img/register.png'
 import { AuthContext } from './../../AuthProvider/AuthProvider';
 import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2'
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash, FaGithub, FaGoogle } from 'react-icons/fa';
 const Register = () => {
    const [show ,setShow] = useState(false);
    const [isChecked , setIsChecked] = useState(false); 
-   const {createUser, updateInfo, verifyEmail} = useContext(AuthContext); 
+   const {createUser, updateInfo, verifyEmail, GoogleSignIn, GithubSignIn ,setUser} = useContext(AuthContext); 
+   const navigate = useNavigate(); 
    const [userInfo, setUserInfo] = useState({
       email: '', 
       name: '', 
@@ -89,12 +90,13 @@ const Register = () => {
          handleVerification();
          Swal.fire({
             position: 'center-center',
-            icon: 'success',
+            icon: 'warning',
             title: 'Congratulations !!! for create  an account. ',
             text: 'Please verify your email address.',
             confirmButtonText: 'ok',
           })
           e.target.reset(); 
+      
       })
       .catch(err => {
          console.log(err); 
@@ -111,9 +113,58 @@ const Register = () => {
       .then(() => {})
       .catch(err =>console.log(err))
    }
+
+
+   const handleGoogleSignIn = () => {
+      GoogleSignIn()
+         .then((res) => {
+            const user = res.user;
+            // setUser(user);
+            console.log(user); 
+            Swal.fire({
+               position: "center-center",
+               icon: "success",
+               title: "successfull ",
+               confirmButtonText: "ok",
+            });
+         })
+         .catch((err) => {
+            setError({ ...error, general: err.message });
+         });
+   };
+
+
+   const handleGithubSignIn = () => {
+      GithubSignIn()
+      .then(res => {
+         const user = res.user; 
+          if(!user?.emailVerified){
+            Swal.fire({
+               position: "center-center",
+               icon: "warning",
+               title: 'Verify now',
+               text: "Please check inbox or spam and verify your email. then login again with github",
+               confirmButtonText: "ok",
+            });  
+             verifyEmail(); 
+          }else{
+            Swal.fire({
+               position: "center-center",
+               icon: "success",
+               title: "Successfully  login",
+               confirmButtonText: "ok",
+            }); 
+            setUser(user); 
+            navigate('/'); 
+          }
+      })
+      .catch(err => {
+         setError({...error, general: err.message })
+      })
+   }
    return (
       <div  className='flex items-center w-full py-5 px-4 md:px-10 bg-violet-600 dark:bg-gray-800 flex-col-reverse md:flex-row justify-between h-auto gap-7 md:gap-0 md:h-screen  '>
-      <div className='w-full md:w-1/2  flex items-center justify-center'>
+      <div className='w-full md:w-1/2  flex flex-col  items-center justify-center'>
          <form className='w-80 p-5 flex flex-col gap-5 bg-white h-auto rounded-xl opacity-80 dark:bg-black'  onSubmit={handleSubmit}>
             <div>
                <h2 className='text-3xl font-bold dark:text-white  text-violet-600'>Sign Up </h2>
@@ -155,6 +206,27 @@ const Register = () => {
                error.general && <p className='text-red-500'>{error.general}</p>
             }
          </form>
+         <div className="flex items-center gap-1  my-3">
+                  <div
+                     className="bg-black dark:bg-white w-20"
+                     style={{ height: "2px" }}
+                  ></div>
+                  <p className="text-white">OR</p>
+                  <div
+                     className="bg-black  dark:bg-white w-20"
+                     style={{ height: "2px" }}
+                  ></div>
+         </div>
+         <div className="w-80">
+                  <button className="relative  w-full px-2 py-2 bg-white dark:bg-dark font-bold text-orange-600 rounded-2xl" onClick={handleGoogleSignIn}>
+                     <FaGoogle className="absolute top-2 left-2 text-2xl"></FaGoogle>{" "}
+                     Google Sign In
+                  </button>
+                  <button className="mt-4 relative  w-full px-2 py-2 bg-white dark:bg-dark font-bold text-orange-600 rounded-2xl" onClick={handleGithubSignIn}>
+                     <FaGithub className="absolute top-2 left-2 text-2xl"></FaGithub>{" "}
+                     Github Sign In
+                  </button>
+         </div>
       </div>
       
       <div className=' sm:w-5/6 md:w-1/2 '>

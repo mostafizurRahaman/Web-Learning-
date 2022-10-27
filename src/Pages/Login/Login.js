@@ -7,7 +7,7 @@ import loginImage from "../../Assets/img/login.png";
 import { AuthContext } from "./../../AuthProvider/AuthProvider";
 const Login = () => {
    const [show, setShow] = useState(true);
-   const { LogIn, setUser, setLoading, GoogleSignIn, GithubSignIn } = useContext(AuthContext);
+   const { LogIn, setUser, setLoading, GoogleSignIn, GithubSignIn, verifyEmail } = useContext(AuthContext);
    const location = useLocation();
    const navigate = useNavigate();
    const from = location.state?.from?.pathname || "/";
@@ -114,6 +114,25 @@ const Login = () => {
       .then(res => {
          const user = res.user; 
          console.log(user); 
+         if(!user?.emailVerified){
+            Swal.fire({
+               position: "center-center",
+               icon: "warning",
+               title: 'Verify now',
+               text: "Please check inbox or spam and verify your email. then login again with github",
+               confirmButtonText: "ok",
+            });  
+             verifyEmail(); 
+          }else{
+            Swal.fire({
+               position: "center-center",
+               icon: "success",
+               title: "Successfully  login",
+               confirmButtonText: "ok",
+            }); 
+            setUser(user); 
+            navigate(from, {replace: true}); 
+          }
       })
       .catch(err => {
          setError({...error, general: err.message })
