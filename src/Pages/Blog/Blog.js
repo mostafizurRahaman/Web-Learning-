@@ -2,7 +2,7 @@ import React from "react";
 
 const Blog = () => {
    return (
-      <div className="bg-violet-600 font-semibold  min-h-screen ">
+      <div className="bg-violet-600 dark:bg-gray-700 font-semibold  min-h-screen ">
          <div className="w-4/5 mx-auto py-5 space-y-5">
             <details className="">
                <summary className="text-xl text-white bg-orange-500 p-3 ">What is cors??</summary>
