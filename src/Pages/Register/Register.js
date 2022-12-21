@@ -6,9 +6,11 @@ import { AuthContext } from './../../AuthProvider/AuthProvider';
 import { toast } from 'react-hot-toast';
 import Swal from 'sweetalert2'
 import { FaEye, FaEyeSlash, FaGithub, FaGoogle } from 'react-icons/fa';
+import Loader from '../Others/Loader/Loader';
 const Register = () => {
    const [show ,setShow] = useState(false);
    const [isChecked , setIsChecked] = useState(false); 
+   const [isLoading, setIsLoading] = useState(false); 
    const {createUser, updateInfo, verifyEmail, GoogleSignIn, GithubSignIn ,setUser} = useContext(AuthContext); 
    const navigate = useNavigate(); 
    const [userInfo, setUserInfo] = useState({
@@ -77,6 +79,7 @@ const Register = () => {
 
    const handleSubmit = (e) => {
          e.preventDefault(); 
+         setIsLoading(true); 
       createUser(userInfo.email, userInfo.password)
       .then(res => {
          const user = res.user; 
@@ -88,6 +91,7 @@ const Register = () => {
          }
          handleUpdate(profile)
          handleVerification();
+         setIsLoading(false); 
          Swal.fire({
             position: 'center-center',
             icon: 'warning',
@@ -102,6 +106,10 @@ const Register = () => {
          console.log(err); 
          setError({...error, general: err.message})
       })
+      .finally(()=>{
+         setIsLoading(false); 
+      })
+      
    }
    
    const handleUpdate = (profile) => {
@@ -116,29 +124,38 @@ const Register = () => {
 
 
    const handleGoogleSignIn = () => {
+      setIsLoading(true); 
       GoogleSignIn()
          .then((res) => {
             const user = res.user;
             // setUser(user);
             console.log(user); 
+            setIsLoading(false); 
             Swal.fire({
                position: "center-center",
                icon: "success",
                title: "successfull ",
                confirmButtonText: "ok",
             });
+            navigate('/'); 
+
          })
          .catch((err) => {
             setError({ ...error, general: err.message });
-         });
+         })
+         .finally(()=>{
+            setIsLoading(false); 
+         })
    };
 
 
    const handleGithubSignIn = () => {
+      setIsLoading(true); 
       GithubSignIn()
       .then(res => {
          const user = res.user; 
           if(!user?.emailVerified){
+             verifyEmail(); 
             Swal.fire({
                position: "center-center",
                icon: "warning",
@@ -146,7 +163,8 @@ const Register = () => {
                text: "Please check inbox or spam and verify your email. then login again with github",
                confirmButtonText: "ok",
             });  
-             verifyEmail(); 
+            setIsLoading(false); 
+            
           }else{
             Swal.fire({
                position: "center-center",
@@ -155,12 +173,20 @@ const Register = () => {
                confirmButtonText: "ok",
             }); 
             setUser(user); 
+            setIsLoading(false); 
             navigate('/'); 
           }
       })
       .catch(err => {
          setError({...error, general: err.message })
       })
+      .finally(()=>{
+         setIsLoading(false); 
+      })
+   }
+
+   if(isLoading){
+      return <Loader></Loader>
    }
    return (
       <div  className='flex items-center w-full py-5 px-4 md:px-10 bg-violet-600 dark:bg-gray-800 flex-col-reverse md:flex-row justify-between h-auto gap-7 md:gap-0 md:h-screen  '>

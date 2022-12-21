@@ -4,9 +4,11 @@ import { FaEye, FaEyeSlash, FaGithub, FaGoogle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import loginImage from "../../Assets/img/login.png";
+import Loader from "../Others/Loader/Loader";
 import { AuthContext } from "./../../AuthProvider/AuthProvider";
 const Login = () => {
    const [show, setShow] = useState(true);
+   const [isLoading, setIsLoading] = useState(false); 
    const { LogIn, setUser, setLoading, GoogleSignIn, GithubSignIn, verifyEmail } = useContext(AuthContext);
    const location = useLocation();
    const navigate = useNavigate();
@@ -55,7 +57,8 @@ const Login = () => {
       }
    };
 
-   const handleSubmit = (e) => {
+   const handleSubmit = (e) => { 
+      setIsLoading(true); 
       e.preventDefault();
       const form = e.target;
       console.log(userInfo.email, userInfo.password);
@@ -72,6 +75,7 @@ const Login = () => {
                setUser(user);
                navigate(from, { replace: true });
                form.reset();
+               setIsLoading(false); 
             } else {
                Swal.fire({
                   position: "center-center",
@@ -79,6 +83,8 @@ const Login = () => {
                   title: "without  email verification you can not login.",
                   confirmButtonText: "ok",
                });
+               setIsLoading(false); 
+
             }
          })
          .catch((err) => {
@@ -86,10 +92,13 @@ const Login = () => {
          })
          .finally(() => {
             setLoading(false);
+            setIsLoading(false); 
+
          });
    };
 
    const handleGoogleSignIn = () => {
+      setIsLoading(true); 
       GoogleSignIn()
          .then((res) => {
             const user = res.user;
@@ -101,15 +110,22 @@ const Login = () => {
                title: "successfull ",
                confirmButtonText: "ok",
             });
-            navigate(from, {replace: true})
+            navigate(from, {replace: true}) 
+            setIsLoading(false); 
+
          })
          .catch((err) => {
             setError({ ...error, general: err.message });
-         });
+            
+         })
+         .finally(()=>{
+            setIsLoading(false); 
+         })
    };
 
 
    const handleGithubSignIn = () => {
+      setIsLoading(true); 
       GithubSignIn()
       .then(res => {
          const user = res.user; 
@@ -122,7 +138,9 @@ const Login = () => {
                text: "Please check inbox or spam and verify your email. then login again with github",
                confirmButtonText: "ok",
             });  
+            setIsLoading(false); 
              verifyEmail(); 
+
           }else{
             Swal.fire({
                position: "center-center",
@@ -132,11 +150,20 @@ const Login = () => {
             }); 
             setUser(user); 
             navigate(from, {replace: true}); 
+            setIsLoading(false); 
+
           }
       })
       .catch(err => {
          setError({...error, general: err.message })
       })
+      .finally(()=>{
+         setIsLoading(false); 
+      })
+   }
+
+   if(isLoading){
+      return <Loader></Loader> 
    }
    return (
       <div>
