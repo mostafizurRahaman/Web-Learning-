@@ -23,7 +23,7 @@ const Header = () => {
             <NavLink  className='hover:text-orange-500 dark:hover:text-orange-600 ' to='/home'>Home</NavLink>
             <NavLink  className='hover:text-orange-500 dark:hover:text-orange-600 ' to='/courses'>Courses</NavLink>
             <NavLink  className='hover:text-orange-500 dark:hover:text-orange-600 ' to='/blog'>Blog</NavLink>
-            <NavLink  className='hover:text-orange-500 dark:hover:text-orange-600 ' to='/fqa'>FQA</NavLink>            
+            {/* <NavLink  className='hover:text-orange-500 dark:hover:text-orange-600 ' to='/fqa'>FQA</NavLink>             */}
         </div>
         <div className='flex items-center gap-5 md:flex-row flex-col '>
          {

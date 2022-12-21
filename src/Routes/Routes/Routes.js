@@ -23,7 +23,7 @@ const routes = createBrowserRouter([
             element: <Courses></Courses>,
             loader: async () =>
                fetch("https://web-learning-server-six.vercel.app/courses"),
-         },
+            },
          {
             path: "/courses/:id",
             element: <CourseDetails></CourseDetails>,

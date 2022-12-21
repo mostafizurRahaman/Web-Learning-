@@ -6,7 +6,7 @@ import { AuthContext } from './../../AuthProvider/AuthProvider';
 const Profile = () => {
    const {user} = useContext(AuthContext); 
    return (
-      <div className='flex items-center   bg-violet-600 dark:bg-gray-600 text-black  font-semibold justify-center' style={{height: '500px'}}>
+      <div className='flex items-center min-h-[85vh]  md:min-h-screen  bg-violet-600 dark:bg-gray-600 text-black  font-semibold justify-center' >
           <div className='h-auto p-3 bg-opacity-90  rounded-lg text-sm mt-5 flex w-80  md:w-96 gap-2 bg-white flex-col md:flex-row  '>
               <div className='w-full md:w-auto'>
                   <img src={user?.photoURL} alt={user?.name} className="rounded-full  w-24 h-24 mx-auto " />
