@@ -1,13 +1,16 @@
 import React from 'react';
 import { useLoaderData } from 'react-router-dom';
+import Loader from '../Others/Loader/Loader';
 import LeftSide from '../Shared/LeftSide/LeftSide';
 import SingleCourses from './../SingleCourses/SingleCourses';
 
 
 const Courses = () => {
-   const courses = useLoaderData(); 
+   const courses = useLoaderData();
+   if(courses.length <= 0){
+      return <Loader></Loader>
+   } 
    
-   console.log(courses); 
    return (
       <div className="grid grid-cols-1  md:grid-cols-5 w-full h-auto  ">
             <div className='bg-violet-500 dark:bg-gray-900  order-2 md:order-1 md:col-span-1 md:min-h-screen py-4 px-2'>

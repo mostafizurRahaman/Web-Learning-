@@ -1,10 +1,14 @@
 import React from 'react';
 import { useContext } from 'react';
 import { BsFillPatchCheckFill } from 'react-icons/bs';
+import Loader from '../Others/Loader/Loader';
 import { AuthContext } from './../../AuthProvider/AuthProvider';
 
 const Profile = () => {
    const {user} = useContext(AuthContext); 
+   if(!user?.uid){
+        return <Loader></Loader>
+   }
    return (
       <div className='flex items-center min-h-[85vh]  md:min-h-screen  bg-violet-600 dark:bg-gray-600 text-black  font-semibold justify-center' >
           <div className='h-auto p-3 bg-opacity-90  rounded-lg text-sm mt-5 flex w-80  md:w-96 gap-2 bg-white flex-col md:flex-row  '>
